@@ -1,0 +1,14 @@
+.DS_Store
+*~
+\#*
+.\#*
+*.swp
+
+Gemfile.lock
+coverage
+doc
+pkg
+.bundle
+spec/rails
+*.sqlite3-journal
+.rvmrc
