@@ -1,27 +1,49 @@
 <h1><%= controller_name.titleize %></h1>
 <%- @docs.each do |action_name,doco| -%>
-  <div class='action_title'><%= action_name.to_s.titleize %></div>
-  <div class='action_description'><%= doco.description %></div>
-  <%- if doco.params.any? -%>
-    <table>
-      <thead>
-        <tr>
-          <th>Parameter</th>
-          <th>Value</th>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%- doco.params.each do |name, param| %>
+  <% form_for :doco, :url => api_canon_test_path, :html => {:id => "#{controller_name}_#{action_name}_form"} do |f| %>
+    <%= f.hidden_field :action_name, :value => action_name %>
+    <%= f.hidden_field :controller_name, :value => controller_name %>
+    <%= f.hidden_field :controller_path, :value => doco.controller_path %>
+    <div class='action_title'><%= action_name.to_s.titleize %></div>
+    <div class='action_description'><%= doco.description %></div>
+    <%- if doco.params.any? -%>
+      <table>
+        <thead>
           <tr>
-            <td><%= name %></td>
-            <td><%= (param[:values] || param[:example_values]).try(:first) %></td>
-            <td><%= param[:type] %></td>
-            <td><%= param[:description] %></td>
+            <th>Parameter</th>
+            <th>Value</th>
+            <th>Example Values</th>
+            <th>Type</th>
+            <th>Description</th>
           </tr>
-        <%- end -%>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <%- doco.params.each do |name, param| %>
+            <tr>
+              <td><%= name %></td>
+              <td><%= param.to_field(f) %></td>
+              <td><%= param.example_values_field(f) %></td>
+              <td><%= param.type %></td>
+              <td><%= param.description %></td>
+            </tr>
+          <%- end -%>
+        </tbody>
+      </table>
+    <%- end -%>
+    <%= f.submit "Test", :onclick => "generate_url_and_call_it('##{controller_name}_#{action_name}_form'); return false;" %>
   <%- end -%>
+  <div class='results'></div>
 <%- end -%>
+
+<script type='text/javascript'>
+  function generate_url_and_call_it(form_id) {
+    var form = jQuery(form_id);
+    var api_url_request = form.attr('action');
+    console.debug(form, api_url_request);
+    console.debug("calling get")
+    window.response_url = jQuery.post(api_url_request, form.serialize());
+    console.debug("response_url:")
+    console.debug(response_url);
+    return false;
+  }
+</script>

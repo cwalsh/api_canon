@@ -1,3 +1,4 @@
+require 'pry'
 require 'api_canon/routes'
 require 'api_canon/version'
 require 'api_canon/app'
@@ -20,7 +21,7 @@ module ApiCanon
   module ClassMethods
   protected
     def document_method(method_name,&block)
-      @document = Document.new controller_name, method_name
+      @document = Document.new controller_path, controller_name, method_name
       @document.instance_eval &block
       DocumentationStore.instance.store @document
       alias_method :"old_#{method_name}", method_name
