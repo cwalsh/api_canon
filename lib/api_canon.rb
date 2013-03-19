@@ -10,6 +10,7 @@ module ApiCanon
   def self.included(base)
     base.extend(ClassMethods)
     include_view_paths
+    create_index_method(base)
   end
 
   # TODO: This should happen at load time, not at include time
@@ -18,25 +19,30 @@ module ApiCanon
     ActionController::Base.append_view_path(view_path) unless ActionController::Base.view_paths.include? view_path
   end
 
+  def self.create_index_method(base)
+    base.class_eval do
+      require 'api_canon/app/helpers/api_canon_view_helper'
+      helper ApiCanon::ApiCanonViewHelper
+      alias_method :old_index, :index
+      def index
+        if params[:format] == 'html'
+          @docs = DocumentationStore.fetch controller_name
+          respond_to do |format|
+            format.html { render 'api_canon/api_canon', :layout => 'layouts/api_canon' }
+          end
+        else
+          old_index
+        end
+      end
+    end
+  end
+
   module ClassMethods
   protected
     def document_method(method_name,&block)
       @document = Document.new controller_path, controller_name, method_name
       @document.instance_eval &block
       DocumentationStore.instance.store @document
-      alias_method :"old_#{method_name}", method_name
-      define_method method_name do
-        if params[:format] == 'html'
-          respond_to do |format|
-            format.html do
-              @docs = DocumentationStore.fetch controller_name
-              render 'api_canon/api_canon'
-            end
-          end
-        else
-          self.send("old_#{method_name}")
-        end
-      end
     end
   end
 
