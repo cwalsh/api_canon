@@ -14,4 +14,10 @@ module ApiCanon::ApiCanonViewHelper
   def api_canon_page_author
     "Cameron Walsh"
   end
+
+  if !defined?(content_for?)
+    def content_for?(content_partial_name)
+      instance_variable_get("@content_for_#{content_partial_name}")
+    end
+  end
 end

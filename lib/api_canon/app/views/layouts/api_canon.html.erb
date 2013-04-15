@@ -53,11 +53,28 @@
     </div>
 
     %>
-    <div class="container">
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <% if content_for? :sidebar %>
+          <div class="span3">
+            <div class="well sidebar-nav">
+              <%= yield :sidebar %>
+            </div><!--/.well -->
+          </div><!--/span-->
+        <% end %>
+        <div class="span<%= content_for?(:sidebar) ? 9 : 12 %>">
+          <% if content_for?(:hero) %>
+            <div class="hero-unit">
+              <%= yield :hero %>
+            </div>
+          <% end %>
+          <%= yield %>
+        </div><!--/span-->
+      </div><!--/row-->
 
-      <%= yield %>
+      <hr>
 
-    </div> <!-- /container -->
+    </div>
 
     <!-- Javascript
     ================================================== -->

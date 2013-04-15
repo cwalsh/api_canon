@@ -1,49 +1,55 @@
-<h1><%= controller_name.titleize %></h1>
-<%- @docs.each do |action_name,doco| -%>
-  <% form_for :doco, :url => api_canon_test_path, :html => {:id => "#{controller_name}_#{action_name}_form"} do |f| %>
-    <%= f.hidden_field :action_name, :value => action_name %>
-    <%= f.hidden_field :controller_name, :value => controller_name %>
-    <%= f.hidden_field :controller_path, :value => doco.controller_path %>
-    <div class='action_title'><%= action_name.to_s.titleize %></div>
-    <div class='action_description'><%= doco.description %></div>
-    <%- if doco.params.any? -%>
-      <table>
-        <thead>
-          <tr>
-            <th>Parameter</th>
-            <th>Value</th>
-            <th>Example Values</th>
-            <th>Type</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <%- doco.params.each do |name, param| %>
-            <tr>
-              <td><%= name %></td>
-              <td><%= param.to_field(f) %></td>
-              <td><%= param.example_values_field(f) %></td>
-              <td><%= param.type %></td>
-              <td><%= param.description %></td>
-            </tr>
+<div class='row-fluid"'>
+  <div class='span12'>
+    <h1><%= controller_name.titleize %></h1>
+    <%- @docs.each do |action_name,doco| -%>
+      <div class='row-fluid"'>
+        <div class='span12'>
+          <% doco_prefix = "#{doco.controller_name}_#{doco.action_name}" %>
+          <% form_for :doco, :url => api_canon_test_path, :html => {:id => "#{controller_name}_#{action_name}_form"}, :prefix => (Rails.version.starts_with?("2") ? "" : doco_prefix) do |f| %>
+            <%= f.hidden_field :action_name, :value => action_name %>
+            <%= f.hidden_field :controller_name, :value => controller_name %>
+            <%= f.hidden_field :controller_path, :value => doco.controller_path %>
+            <h2><%= action_name.to_s.titleize %></h2>
+            <p class='lead'><%= doco.description %></p>
+            <%- if doco.params.any? -%>
+              <table class='table table-striped table-bordered'>
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Value</th>
+                    <th>Example Values</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%- doco.params.each do |name, param| %>
+                    <tr>
+                      <td><%= name %></td>
+                      <td><%= param.to_field(f, doco_prefix) %></td>
+                      <td><%= param.example_values_field(f, doco_prefix) %></td>
+                      <td><%= param.type %></td>
+                      <td><%= param.description %></td>
+                    </tr>
+                  <%- end -%>
+                </tbody>
+              </table>
+            <%- end -%>
+            <%= f.submit "Test", :onclick => "generate_url_and_call_it('##{controller_name}_#{action_name}_form'); return false;", :class => 'btn' %>
           <%- end -%>
-        </tbody>
-      </table>
+          <div id='<%= "#{controller_name}_#{action_name}_results" %>' class='results'></div>
+        </div>
+      </div>
     <%- end -%>
-    <%= f.submit "Test", :onclick => "generate_url_and_call_it('##{controller_name}_#{action_name}_form'); return false;" %>
-  <%- end -%>
-  <div class='results'></div>
-<%- end -%>
+  </div>
+</div>
 
 <script type='text/javascript'>
   function generate_url_and_call_it(form_id) {
     var form = jQuery(form_id);
     var api_url_request = form.attr('action');
-    console.debug(form, api_url_request);
-    console.debug("calling get")
-    window.response_url = jQuery.post(api_url_request, form.serialize());
-    console.debug("response_url:")
-    console.debug(response_url);
+    var post_request = jQuery.post(api_url_request, form.serialize());
+    post_request.done(function(data) {});
     return false;
   }
 </script>
