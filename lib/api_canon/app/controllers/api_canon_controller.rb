@@ -1,13 +1,17 @@
 module ApiCanon
   class ApiCanonController < ApplicationController
     def test
-      response = {:url => api_request_url, :methods => matching_methods, :params => sanitized(params[:doco]), :non_get_url => api_request_url_for_non_get_requests}
+      response = {:methods => matching_methods, :params => sanitized(params[:doco])}
+      #TODO: Put routes in here, too.
       matching_methods.each do |m|
         response[:curl] ||= {}
+        response[:urls] ||= {}
         if m == :get
           response[:curl][m] = as_curl(api_request_url)
+          response[:urls][m] = api_request_url
         else
           response[:curl][m] = as_curl(api_request_url_for_non_get_requests, m, non_url_parameters_for_request_generation)
+          response[:urls][m] = api_request_url_for_non_get_requests
         end
       end
       render :json => response
@@ -77,6 +81,7 @@ module ApiCanon
     def sanitized(doco_params)
       sanitized = doco_params.dup
       sanitized.delete_if {|k,v| %w(controller controller_path action controller_name action_name).include?(k.to_s) }
+      sanitized.each {|k,v| v.reject!(&:blank?) if v.is_a? Array}
       sanitized.delete_if {|k,v| v.blank? }
       sanitized
     end

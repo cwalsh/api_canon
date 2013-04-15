@@ -35,9 +35,13 @@
                 </tbody>
               </table>
             <%- end -%>
-            <%= f.submit "Test", :onclick => "generate_url_and_call_it('##{controller_name}_#{action_name}_form'); return false;", :class => 'btn' %>
+            <%= f.submit "Test", :onclick => "generate_url_and_call_it('#{controller_name}', '#{action_name}'); return false;", :class => 'btn' %>
           <%- end -%>
-          <div id='<%= "#{controller_name}_#{action_name}_results" %>' class='results'></div>
+          <div id='<%= "#{controller_name}_#{action_name}_results" %>' class='results'>
+            <div class='urls'></div>
+            <div class='curls'></div>
+            <div class='response'></div>
+          </div>
         </div>
       </div>
     <%- end -%>
@@ -45,11 +49,20 @@
 </div>
 
 <script type='text/javascript'>
-  function generate_url_and_call_it(form_id) {
-    var form = jQuery(form_id);
+  function generate_url_and_call_it(controller_name, action_name) {
+    var form = jQuery('#' + controller_name + '_' + action_name + '_form');
     var api_url_request = form.attr('action');
     var post_request = jQuery.post(api_url_request, form.serialize());
-    post_request.done(function(data) {});
+    post_request.done(function(data) {
+      var urls_div = jQuery('#' + controller_name + '_' + action_name + '_results div.urls')
+      var curls_div = jQuery('#' + controller_name + '_' + action_name + '_results div.curls')
+      var response_div = jQuery('#' + controller_name + '_' + action_name + '_results div.response')
+      //urls_div.html('<p>URLs generated: </p>');
+      curls_div.html('<p>Curl requests generated: </p>');
+      //jQuery.each(data['urls'], function(key,value) {urls_div.append(key.toUpperCase() + ': <code>' + value + '</code>')});
+      jQuery.each(data['curl'], function(key,value) {curls_div.append(key.toUpperCase() + ': <code>' + value + '</code>')});
+      jQuery.each(data['urls'], function(key,value) {if (key == 'get') {jQuery.get(value).done(function(data) {response_div.html('<p>Response: </p><pre>' + JSON.stringify(JSON.parse(data), undefined, 2) + '</pre>')});}});
+    });
     return false;
   }
 </script>
