@@ -12,3 +12,4 @@ pkg
 spec/rails
 *.sqlite3-journal
 .rvmrc
+*.gem
