@@ -24,6 +24,7 @@ To view the api documentation, visit the documented controller's index action wi
 ## Going forward
 
 Right now, api_canon is changing a lot.  I plan to support the following features soon:
+
 1. Response codes - describe what you mean when you send back a 200, a 201, 403 etc.
 2. Send example requests to a different server, e.g. a sandbox server.
 3. Rewrite. This spike is a mess of experimentation without clear end-goals. Now that I know what I want this to do, I will write it properly.
@@ -34,8 +35,8 @@ Right now, api_canon is changing a lot.  I plan to support the following feature
 [Cameron Walsh](http://github.com/cwalsh)
 
 ## Contributions
- - Fork project
- - Write tests, or even code as well
- - Pull request
- - ???
- - Profit.
+1. Fork project
+2. Write tests, or even code as well
+3. Pull request
+4. ???
+5. Profit.
