@@ -1,5 +1,5 @@
 module ApiCanon
-  class ApiCanonController < ApplicationController
+  class ApiCanonController < ActionController::Base
     def test
       response = {:methods => matching_methods, :params => sanitized(params[:doco])}
       #TODO: Put routes in here, too.
