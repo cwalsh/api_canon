@@ -23,7 +23,7 @@ module ApiCanon
     base.class_eval do
       require 'api_canon/app/helpers/api_canon_view_helper'
       helper ApiCanon::ApiCanonViewHelper
-      alias_method :old_index, :index
+      alias_method :old_index, :index if defined?(index)
       def index
         if params[:format] == 'html'
           @docs = DocumentationStore.fetch controller_name
