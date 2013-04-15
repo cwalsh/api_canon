@@ -1,4 +1,4 @@
-require 'pry'
+require 'pry' rescue nil
 require 'api_canon/routes'
 require 'api_canon/version'
 require 'api_canon/app'
