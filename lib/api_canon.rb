@@ -26,7 +26,7 @@ module ApiCanon
       def initialize
         super
         self.class_eval do
-          alias_method :old_index, :index if defined?(index)
+          alias :old_index :index
           def index
             if params[:format] == 'html'
               @docs = DocumentationStore.fetch controller_name

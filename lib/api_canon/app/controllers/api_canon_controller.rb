@@ -20,7 +20,7 @@ module ApiCanon
   private
 
     def routes
-      ActionController::Routing::Routes.routes
+      Rails.version.starts_with?('2') ? ActionController::Routing::Routes.routes : Rails.application.routes.routes
     end
 
     def matching_routes
@@ -47,7 +47,11 @@ module ApiCanon
 
     def matching_methods
       #TODO: ApiDocument should define what methods it accepts, and fall back to route generation
-      matching_routes.map {|r| r.conditions[:method]}.uniq
+      if Rails.version.starts_with?('2')
+        matching_routes.map {|r| r.conditions[:method]}.uniq
+      else
+        matching_routes.map {|r| %w(GET PUT POST DELETE).select {|m| r.verb =~ m}}.flatten.uniq.map(&:downcase).map(&:to_sym)
+      end
     end
 
     def api_document
@@ -55,7 +59,7 @@ module ApiCanon
     end
 
     def parameters_for_request_generation
-      sanitized(params[:doco]).merge({:controller => api_document.controller_path, :action => api_document.action_name})
+      sanitized(params[:doco]).merge({:controller => "/#{api_document.controller_path}", :action => api_document.action_name})
     end
 
     def non_url_parameters_for_request_generation
@@ -63,7 +67,11 @@ module ApiCanon
     end
 
     def url_param_keys
-      matching_routes.inject(Set.new()) {|set,r| set += r.significant_keys.map(&:to_s) }
+      if Rails.version.starts_with?('2')
+        matching_routes.inject(Set.new()) {|set,r| set += r.significant_keys.map(&:to_s) }
+      else
+        matching_routes.inject(Set.new()) {|set,r| set += r.segment_keys.map(&:to_s) }
+      end
     end
 
     def url_parameters_for_request_generation
@@ -71,10 +79,16 @@ module ApiCanon
     end
 
     def api_request_url_for_non_get_requests
+      unless Rails.version.starts_with?('2')
+        self.class.send(:include, Rails.application.routes.url_helpers)
+      end
       url_for url_parameters_for_request_generation
     end
 
     def api_request_url
+      unless Rails.version.starts_with?('2')
+        self.class.send(:include, Rails.application.routes.url_helpers)
+      end
       url_for parameters_for_request_generation
     end
 
