@@ -34,7 +34,7 @@
       curls_div.html('<p>Curl requests generated: </p>');
       //jQuery.each(data['urls'], function(key,value) {urls_div.append(key.toUpperCase() + ': <pre>' + value + '</pre>')});
       jQuery.each(data['curl'], function(key,value) {curls_div.append(key.toUpperCase() + ': <pre>' + value + '</pre>')});
-      jQuery.each(data['urls'], function(key,value) {if (key == 'get') {jQuery.get(value).done(function(data) {response_div.html('<p>Response: </p><pre>' + JSON.stringify(JSON.parse(data), undefined, 2) + '</pre>')});}});
+      jQuery.each(data['urls'], function(key,value) {if (key == 'get') {jQuery.get(value).done(function(data) {window.data=data;response_div.html('<p>Response: </p><pre>' + JSON.stringify(eval(data), undefined, 2) + '</pre>')});}});
     });
     return false;
   }
