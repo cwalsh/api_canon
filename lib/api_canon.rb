@@ -23,15 +23,20 @@ module ApiCanon
     base.class_eval do
       require 'api_canon/app/helpers/api_canon_view_helper'
       helper ApiCanon::ApiCanonViewHelper
-      alias_method :old_index, :index if defined?(index)
-      def index
-        if params[:format] == 'html'
-          @docs = DocumentationStore.fetch controller_name
-          respond_to do |format|
-            format.html { render 'api_canon/api_canon', :layout => 'layouts/api_canon' }
+      def initialize
+        super
+        self.class_eval do
+          alias_method :old_index, :index if defined?(index)
+          def index
+            if params[:format] == 'html'
+              @docs = DocumentationStore.fetch controller_name
+              respond_to do |format|
+                format.html { render 'api_canon/api_canon', :layout => 'layouts/api_canon' }
+              end
+            else
+              old_index
+            end
           end
-        else
-          old_index
         end
       end
     end
