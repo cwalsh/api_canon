@@ -1,4 +1,4 @@
-# api_canon
+# API Canon
 
 ## Introduction
 API Canon is a tool for programatically documenting APIs with example usage.
@@ -20,6 +20,31 @@ Then, in each controller you want to document, add the line
 
 To view the api documentation, visit the documented controller's index action with '.html' as the format.
 
+### Stylesheets and Javscripts
+A lot of ApiCanon's functionality depends on jQuery, and its styles are all based on twitter bootstrap.  The quickest way to get up and running is as follows:
+
+1. Put this in your Gemfile
+
+        gem 'twitter-bootstrap-rails'
+
+2. Install the gem
+
+        bundle install
+
+3. Generate the assets
+  - Simple Option: Generate static assets
+
+            rails generate bootstrap:install static
+  - Custom Option: Generate dynamic assets
+
+      - Install less - put this in your Gemfile:
+
+                gem 'less-rails'
+
+      - Then generate the dynamic assets and a custom layout
+
+                rails generate bootstrap:install less
+                rails g bootstrap:layout api_canon fluid
 
 ## Going forward
 
