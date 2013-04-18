@@ -2,6 +2,7 @@ require 'api_canon/routes'
 require 'api_canon/version'
 require 'api_canon/app'
 require 'api_canon/document'
+require 'api_canon/documented_param'
 require 'api_canon/documentation_store'
 
 module ApiCanon
