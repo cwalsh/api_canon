@@ -38,7 +38,7 @@ describe ApiCanon::DocumentedParam do
   describe :example_values_field do
     context "array of example values" do
       it "Creates a select field" do
-        fake_form.should_receive :select
+        documented_param.should_receive(:select_tag)
         documented_param.example_values_field fake_form, doco_prefix
       end
       it "does nothing with array-value fields" do

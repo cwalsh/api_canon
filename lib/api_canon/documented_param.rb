@@ -2,6 +2,7 @@ module ApiCanon
   class DocumentedParam
     attr_accessor :name, :values, :type, :default, :description, :example_values
     attr_writer :multiple
+    include ActionView::Helpers
     def values_for_example
       example_values || values || ""
     end
@@ -28,7 +29,7 @@ module ApiCanon
     def example_values_field(f, doco_prefix)
       if values_for_example.is_a?(Array)
         if type != :array
-          f.select :example_value, values_for_example, {:selected => default, :include_blank => true}, :class => 'input-block-level',
+          select_tag :example_value, options_for_select([""] + values_for_example, default), :class => 'input-block-level',
             :onchange => "jQuery('##{doco_prefix}_#{name}').val(this.value)", :id => "#{doco_prefix}_#{name}_example"
         end
       else
