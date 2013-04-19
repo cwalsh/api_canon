@@ -55,10 +55,9 @@ A lot of ApiCanon's functionality depends on jQuery, and its styles are all base
 Right now, api_canon is changing a lot.  I plan to support the following features soon:
 
 1. Response codes - describe what you mean when you send back a 200, a 201, 403 etc.
-2. Send example requests to a different server, e.g. a sandbox server.
-3. Rewrite. This spike is a mess of experimentation without clear end-goals. Now that I know what I want this to do, I will write it properly.
-4. Swagger API output (optional)
-5. You will need to route the index action for each documented controller until such point as I provide an alternative means of getting at this documentation.
+2. Support API tokens or other authentication to allow users to edit data live, with non-GET requests.
+3. Swagger API output (optional)
+4. You will need to route the index action for each documented controller until such point as I provide an alternative means of getting at this documentation.
 
 ## Contributors
 [Cameron Walsh](http://github.com/cwalsh)
