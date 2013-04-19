@@ -1,6 +1,7 @@
 <div class='row-fluid"'>
   <div class='span12'>
     <h1><%= controller_name.titleize %></h1>
+    <%- @docs ||= ::ApiCanon::DocumentationStore.fetch controller_name -%>
     <%- @docs.each do |action_name,doco| -%>
       <div class='row-fluid"'>
         <div class='span12'>
