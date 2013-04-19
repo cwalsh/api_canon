@@ -32,7 +32,7 @@ module ApiCanon
             :onchange => "jQuery('##{doco_prefix}_#{name}').val(this.value)", :id => "#{doco_prefix}_#{name}_example"
         end
       else
-        Array.wrap(values_for_example).join(", ")
+        values_for_example
       end
     end
   end
