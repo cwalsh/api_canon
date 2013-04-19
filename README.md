@@ -20,6 +20,10 @@ Then, in each controller you want to document, add the line
 
 To view the api documentation, visit the documented controller's index action with '.html' as the format.
 
+To enable the 'test' button on the generated documentation pages, you'll need to add this to your config/routes.rb file:
+
+    ApiCanon::Routes.draw(self) # Or 'map' instead of 'self' for Rails 2
+
 ### Stylesheets and Javscripts
 A lot of ApiCanon's functionality depends on jQuery, and its styles are all based on twitter bootstrap.  The quickest way to get up and running is as follows:
 
