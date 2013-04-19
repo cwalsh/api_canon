@@ -40,13 +40,17 @@
           jQuery.get(value)
             .done(function(data,textStatus,jqXHR) {
               response_div.removeClass('error')
-                .html('<p>Response: (' + jqXHR.status + ' ' + jqXHR.statusText + ') </p>')
-                .append('<pre>' + JSON.stringify(eval(data), undefined, 2) + '</pre>')
+                .html('<p>Response: (' + jqXHR.status + ' ' + jqXHR.statusText + ') </p><pre></pre>')
+              if (jqXHR.getResponseHeader('Content-Type').match(/(text|application)\/json.*/)) {
+                response_div.find('pre').append(JSON.stringify(eval(data), undefined, 2))
+              } else {
+                response_div.find('pre').text(jqXHR.responseText)
+              }
             })
             .fail(function(jqXHR,textStatus,errorThrown) {
               response_div.addClass('error')
-                .html('<p>Response: (' + jqXHR.status + ' ' + jqXHR.statusText + ') </p>')
-                .append('<pre>' + jqXHR.responseText + '</pre>')
+                .html('<p>Response: (' + jqXHR.status + ' ' + jqXHR.statusText + ') </p><pre></pre>')
+                response_div.find('pre').text(jqXHR.responseText)
             })
         }
       });
