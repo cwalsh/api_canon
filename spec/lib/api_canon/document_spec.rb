@@ -7,6 +7,11 @@ describe ApiCanon::Document do
   its(:controller_path) { should == 'path/fake' }
   its(:controller_name) { should == 'fake' }
   its(:action_name) { should == :index }
+  it "Should document the 'format' param by default" do
+    expect(document.params[:format]).to be_a ApiCanon::DocumentedParam
+    expect(document.params[:format].example_values). to eq [:json, :xml]
+    expect(document.params[:format].default).to eq :json
+  end
   describe :param do
     it "documents the named param" do
       document.param :id, :default => 1, :description => description, :type => :integer

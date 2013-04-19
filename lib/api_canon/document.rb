@@ -4,6 +4,9 @@ module ApiCanon
     def initialize(controller_path, controller_name, action_name)
       super
       @params={}
+      @params[:format] = DocumentedParam.new :format,
+        :default => :json, :example_values => [:json, :xml], :type => :string,
+        :description => "The requested format of the response."
       @response_codes={}
     end
     def param(param_name, options={})
