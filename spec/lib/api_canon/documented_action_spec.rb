@@ -1,11 +1,9 @@
 require 'spec_helper'
-describe ApiCanon::Document do
+describe ApiCanon::DocumentedAction do
 
-  let(:document) {ApiCanon::Document.new 'path/fake', 'fake', :index}
+  let(:document) {ApiCanon::DocumentedAction.new :index}
   let(:description) {'ID is the unique identifier of the object'}
   subject { document }
-  its(:controller_path) { should == 'path/fake' }
-  its(:controller_name) { should == 'fake' }
   its(:action_name) { should == :index }
   it "Should document the 'format' param by default" do
     expect(document.params[:format]).to be_a ApiCanon::DocumentedParam

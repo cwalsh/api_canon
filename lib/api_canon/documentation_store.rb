@@ -5,14 +5,19 @@ module ApiCanon
     include Singleton
     def store cont_doco
       @docos ||= {}
-      @docos[cont_doco[:controller_name]] ||= {}
-      @docos[cont_doco[:controller_name]][cont_doco[:action_name]] = cont_doco
+      @docos[cont_doco.controller_path] = cont_doco
     end
     def docos
-      @docos
+      @docos ||= {}
     end
-    def self.fetch controller_name
-      self.instance.docos[controller_name]
+    def self.docos
+      self.instance.docos
+    end
+    def self.store cont_doco
+      self.instance.store cont_doco
+    end
+    def self.fetch controller_path
+      self.instance.docos[controller_path]
     end
   end
 end
