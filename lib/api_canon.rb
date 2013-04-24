@@ -2,6 +2,7 @@ require 'api_canon/routes'
 require 'api_canon/version'
 require 'api_canon/app'
 require 'api_canon/document'
+require 'api_canon/documented_action'
 require 'api_canon/documented_param'
 require 'api_canon/documentation_store'
 
@@ -17,7 +18,7 @@ module ApiCanon
   end
 
   def api_canon_docs
-    @docs = DocumentationStore.fetch controller_name
+    @api_doc = DocumentationStore.fetch controller_path
     respond_to do |format|
       format.html { render 'api_canon/api_canon', :layout => 'layouts/api_canon' }
     end
@@ -33,10 +34,19 @@ module ApiCanon
 
   module ClassMethods
   protected
+    def document_controller(opts={}, &block)
+      document = DocumentationStore.fetch controller_path
+      document ||= Document.new controller_path, controller_name, opts
+      document.instance_eval &block
+      DocumentationStore.store document
+    end
     def document_method(method_name,&block)
-      @document = Document.new controller_path, controller_name, method_name
-      @document.instance_eval &block
-      DocumentationStore.instance.store @document
+      document = DocumentationStore.fetch controller_path
+      document ||= Document.new controller_path, controller_name
+      documented_action = ApiCanon::DocumentedAction.new method_name
+      documented_action.instance_eval &block
+      document.add_action documented_action
+      DocumentationStore.store document
     end
   end
 

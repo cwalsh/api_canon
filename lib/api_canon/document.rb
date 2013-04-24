@@ -1,22 +1,29 @@
 module ApiCanon
-  class Document < Struct.new(:controller_path, :controller_name, :action_name)
-    attr_reader :params, :response_codes, :description
-    def initialize(controller_path, controller_name, action_name)
-      super
-      @params={}
-      @params[:format] = DocumentedParam.new :format,
-        :default => :json, :example_values => [:json, :xml], :type => :string,
-        :description => "The requested format of the response."
-      @response_codes={}
-    end
-    def param(param_name, options={})
-      @params[param_name] = DocumentedParam.new param_name, options
-    end
-    def response_code(code, options={})
-      @response_codes[code] = options
+  class Document
+    attr_reader :description, :controller_path, :controller_name
+    attr_accessor :documented_actions
+    def initialize(controller_path, controller_name, opts={})
+      @controller_path = controller_path
+      @controller_name = controller_name
+      self.display_name = opts[:as]
+      @documented_actions = []
     end
     def describe(desc)
       @description = desc
+    end
+    def display_name
+      @display_name || @controller_name.titleize
+    end
+    def display_name=(dn)
+      if dn.nil?
+        @display_name = nil
+      else
+        dn = dn.to_s
+        @display_name = (dn =~ /\A([a-z]*|[A-Z]*)\Z/ ? dn.titleize : dn)
+      end
+    end
+    def add_action(documented_action)
+      @documented_actions << documented_action unless @documented_actions.map(&:action_name).include?(documented_action.action_name)
     end
   end
 end

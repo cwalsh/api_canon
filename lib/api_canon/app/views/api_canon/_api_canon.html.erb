@@ -1,17 +1,20 @@
 <div class='row-fluid"'>
   <div class='span12'>
-    <h1><%= controller_name.titleize %></h1>
-    <%- @docs ||= ::ApiCanon::DocumentationStore.fetch controller_name -%>
-    <%- @docs.each do |action_name,doco| -%>
+    <%- @api_doc ||= ::ApiCanon::DocumentationStore.fetch controller.controller_path -%>
+    <h1><%= @api_doc.display_name %></h1>
+    <p class='lead'><%= @api_doc.description %></p>
+    <%- @api_doc.documented_actions.each do |doco| -%>
       <div class='row-fluid"'>
         <div class='span12'>
-          <% doco_prefix = "#{doco.controller_name}_#{doco.action_name}" %>
+          <h2><%= doco.action_name.to_s.titleize %></h2>
+          <p><%= doco.description %></p>
+          <% doco_prefix = "#{@api_doc.controller_name}_#{doco.action_name}" %>
           <% if Rails.version.starts_with?('2') %>
             <%= render :partial => 'api_canon/rails_2_form', :locals => {:doco => doco, :doco_prefix => doco_prefix} %>
           <% else %>
             <%= render :partial => 'api_canon/form', :locals => {:doco => doco, :doco_prefix => doco_prefix} %>
           <% end %>
-          <div id='<%= "#{controller_name}_#{action_name}_results" %>' class='results'>
+          <div id='<%= "#{@api_doc.controller_name}_#{doco.action_name}_results" %>' class='results'>
             <div class='urls'></div>
             <div class='curls'></div>
             <div class='response'></div>
@@ -62,7 +65,7 @@
 <% content_for :sidebar do %>
 <ul class='nav nav-list'>
   <% ApiCanon::DocumentationStore.instance.docos.each do |key, doco| %>
-    <li><%= link_to doco.first.last.controller_path, url_for(:controller => doco.first.last.controller_path, :action => :index, :format => :html) %></li>
+    <li><%= link_to doco.controller_path, url_for(:controller => doco.controller_name, :action => :index, :format => :html) %></li>
   <% end %>
 </ul>
 <% end %>

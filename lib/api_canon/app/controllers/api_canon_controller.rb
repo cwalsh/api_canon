@@ -25,7 +25,7 @@ module ApiCanon
 
     def matching_routes
       routes.select do |r|
-        r.requirements[:controller] == api_document.controller_path.to_s &&
+        r.requirements[:controller] == requested_controller_path.to_s &&
           r.requirements[:action] == api_document.action_name.to_s
       end
     end
@@ -55,11 +55,16 @@ module ApiCanon
     end
 
     def api_document
-      doco = ApiCanon::DocumentationStore.fetch(params[:doco][:controller_name])[params[:doco][:action_name].to_sym]
+      doco = ApiCanon::DocumentationStore.fetch(requested_controller_path)
+      doco.documented_actions.detect {|da| da.action_name.to_s == params[:doco][:action_name] }
+    end
+
+    def requested_controller_path
+      params[:doco][:controller_path]
     end
 
     def parameters_for_request_generation
-      sanitized(params[:doco]).merge({:controller => "/#{api_document.controller_path}", :action => api_document.action_name})
+      sanitized(params[:doco]).merge({:controller => "/#{requested_controller_path}", :action => api_document.action_name})
     end
 
     def non_url_parameters_for_request_generation
