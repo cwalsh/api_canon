@@ -7,14 +7,12 @@ describe ApiCanon do
     end
   end
   describe 'including' do
-    context :class_methods do
-      subject {fake_controller}
-      its(:methods) { should include(:document_method)}
+    it "adds class methods to the controller" do
+      expect(fake_controller.methods.map(&:to_s)).to include('document_method')
     end
-    context :instance_methods do
-      subject {fake_controller.new}
-      its(:methods) { should include(:api_canon_docs)}
-      its(:methods) { should include(:index)}
+    it "adds instance methods to the controller" do
+      expect(fake_controller.new.methods.map(&:to_s)).to include('api_canon_docs')
+      expect(fake_controller.new.methods.map(&:to_s)).to include('index')
     end
   end
 
