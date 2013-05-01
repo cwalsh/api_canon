@@ -65,7 +65,7 @@
 <% content_for :sidebar do %>
 <ul class='nav nav-list'>
   <% ApiCanon::DocumentationStore.instance.docos.each do |key, doco| %>
-    <li><%= link_to doco.controller_path, url_for(:controller => doco.controller_name, :action => :index, :format => :html) %></li>
+    <li><%= link_to doco.display_name, url_for(:controller => doco.controller_path, :action => :index, :format => :html) %></li>
   <% end %>
 </ul>
 <% end %>
