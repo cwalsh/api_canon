@@ -1,7 +1,7 @@
 # API Canon
 
 ## Introduction
-API Canon is a tool for programatically documenting APIs with example usage.
+API Canon is a tool for programatically documenting Ruby on Rails APIs with example usage.
 
 ## Installation and usage
 If you're using bundler, then put this in your Gemfile:
