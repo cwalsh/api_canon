@@ -24,6 +24,9 @@ module ApiCanon
     end
   end
 
+  # When this module is included, your index method is overwritten with this one,
+  # which renders the ApiCanon documentation if params[:format] is html, and defaults
+  # to the existing method otherwise.
   def index
     if params[:format].blank? || params[:format] == 'html'
       api_canon_docs
@@ -33,13 +36,38 @@ module ApiCanon
   end
 
   module ClassMethods
-  protected
+    # document_controller is used to describe your controller as a whole (Your API endpoint)
+    #
+    # == Example:
+    #   document_controller as: 'Awesome Things' do
+    #     describe "Here you can see all the awesome things, and get more details about the awesome things you're interested in."
+    #   end
+    #
+    # @param opts [Hash] Optional, current options are:
+    #     'as' - An optional override for the controller name which defaults to controller_name.titleize
+    # @param block [&block] Begins the controller documentation DSL
+    # @see ApiCanon::Document#describe
     def document_controller(opts={}, &block)
       document = DocumentationStore.fetch controller_path
       document ||= Document.new controller_path, controller_name, opts
       document.instance_eval &block
       DocumentationStore.store document
     end
+
+    # document_method is used to describe the actions in your controller (your API actions)
+    #
+    # Example:
+    #   document_method :index do
+    #     describe "Gives you a list of awesome things!"
+    #     param :foo, type: 'String', default: 'bar', example_values: Foo.limit(5).pluck(:name), description: 'foo is the type of awesome required'
+    #     param :filter_level, type: 'Integer', default: 1, values: [1,2,3,4], description: 'filter_level can only be 1, 2, 3 or 4'
+    #   end
+    #
+    # @param method_name [Symbol] The method to be documented
+    # @param block [block] Begins the action documentation DSL
+    # @see ApiCanon::DocumentedAction#describe
+    # @see ApiCanon::DocumentedAction#param
+    # @see ApiCanon::DocumentedAction#response_code
     def document_method(method_name,&block)
       document = DocumentationStore.fetch controller_path
       document ||= Document.new controller_path, controller_name

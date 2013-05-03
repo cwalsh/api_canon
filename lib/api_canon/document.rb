@@ -8,6 +8,10 @@ module ApiCanon
       self.display_name = opts[:as]
       @documented_actions = []
     end
+    # The describe method is used as a DSL method in the document_controller block,
+    # use it to describe your API endpoint as a whole.
+    # @see ApiCanon::ClassMethods#document_controller
+    # @param desc [String] The text to appear at the top of your API endpoint documentation page.
     def describe(desc)
       @description = desc
     end

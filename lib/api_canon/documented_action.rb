@@ -16,6 +16,10 @@ module ApiCanon
     def response_code(code, options={})
       @response_codes[code] = options
     end
+    # The describe method is used as a DSL method in the document_action block,
+    # use it to describe your API endpoint as a whole.
+    # @see ApiCanon::ClassMethods#document_action
+    # @param desc [String] The text to appear at the top of your API endpoint documentation page.
     def describe(desc)
       @description = desc
     end
