@@ -1,3 +1,4 @@
+require 'singleton'
 module ApiCanon
   # Replace this at the earliest possible opportunity
   # with something that stores stuff in Redis or something
