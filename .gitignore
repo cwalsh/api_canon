@@ -14,3 +14,4 @@ spec/rails
 .rvmrc
 *.gem
 *.log
+.yardoc
