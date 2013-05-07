@@ -15,3 +15,5 @@ spec/rails
 *.gem
 *.log
 .yardoc
+.ruby-version
+.ruby-gemset
