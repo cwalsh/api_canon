@@ -8,29 +8,101 @@ API Canon is a tool for programatically documenting Ruby on Rails APIs with exam
 ## Installation and usage
 If you're using bundler, then put this in your Gemfile:
 
-    gem 'api_canon'
-
+```ruby
+gem 'api_canon'
+```
 Then, in each controller you want to document, add the line
 
-    include ApiCanon
+```ruby
+include ApiCanon
+```
 
 ... which allows you to describe what all the actions in the controller are concerned about like this:
 
-    document_controller :as => 'optional_rename' do
-      describe "The actions here are awesome, they allow you to get a list of awesome things, and make awesome things, too!"
-    end
+```ruby
+document_controller :as => 'optional_rename' do
+  describe "The actions here are awesome, they allow you to get a list of awesome things, and make awesome things, too!"
+end
+```
 
-... and you can document all the actions you want like this:
+That is optional, but reccomended, as it gives context to users of your API.
 
-    document_method :index do
-      param :category_codes, :type => :array, :multiple => true, :example_values => Category.all(:limit => 5, :select => :code).map(&:code), :description => "Return only categories for the given category codes", :default => 'some-awesome-category-code'
-    end
+More usefully you can document all the actions you want like this:
+
+```ruby
+document_method :index do
+  param :category_codes, :type => :array, :multiple => true, :example_values => Category.all(:limit => 5, :select => :code).map(&:code), :description => "Return only categories for the given category codes", :default => 'some-awesome-category-code'
+end
+```
 
 To view the api documentation, visit the documented controller's index action with '.html' as the format.
 
 To enable the 'test' button on the generated documentation pages, you'll need to add this to your config/routes.rb file:
 
-    ApiCanon::Routes.draw(self) # Or 'map' instead of 'self' for Rails 2
+```ruby
+ApiCanon::Routes.draw(self) # Or 'map' instead of 'self' for Rails 2
+```
+
+## Examples
+
+### Standard Rails actions
+
+If you have an index action, you should render api_canon documentation when params[:format] is html. For example:
+
+```ruby
+class CategoriesController < ApplicationController
+  include ApiCanon
+
+
+  document_method :index do
+    describe "This gives you a bunch of categories."
+    param :node, :type => :string, :values => ['womens-fashion', 'mens-fashion'], :default => 'womens-fashion', :description => "Category code to start with"
+    param :depth, :type => :integer, :values => 1..4, :default => 1, :description => "Maximum depth to include child categories"
+  end
+  def index
+    # Do stuff.
+    respond_to do |format|
+      format.html { render :layout => 'api_canon'} # Defaults to api_canon index
+      format.json { render :json => @some_list_of_objects }
+    end
+  end
+end
+```
+
+### Using inherited_resources
+
+It's a little easier with InheritedResources.
+Simply include ApiCanon after you call inherit_resources.
+It will create an index action that renders the documentation if params[:format]
+is blank or :html, and defaults back to the inherited_resources index action 
+otherwise.
+
+```ruby
+class FunkyCategoriesController < ApplicationController
+  inherit_resources
+  respond_to :json, :xml
+  actions :index, :show
+
+  include ApiCanon
+
+  document_controller :as => 'Categories' do
+    describe "Categories are used for filtering products. They are hierarchical, with 4 levels. These 4 levels are known as Super-Categories, Categories, Sub-Categories and Types. Examples include \"Women's Fashion\", \"Shirts\" and so forth. They are uniquely identifiable by their category_code field."
+  end
+
+  document_method :index do
+    describe "This action returns a filtered tree of categories based on the parameters given in the request."
+    param :hierarchy_level, :values => 1..4, :type => :integer, :default => 1, :description => "Maximum depth to include child categories"
+    param :category_codes, :type => :array, :multiple => true, :example_values => Category.online.enabled.super_categories.all(:limit => 5, :select => :code).map(&:code), :description => "Return only categories for the given category codes", :default => 'mens-fashion-accessories'
+  end
+
+  document_method :show do
+    describe "This action returns a tree of categories starting at the requested root node."
+    param :id, :type => :string, :example_values => Category.online.enabled.super_categories.all(:limit => 5, :select => :code).map(&:code), :description => "Category code to show, the root node for the entire tree.", :default => 'mens-fashion-accessories'
+  end
+
+  #... code to support the above documented parameters etc.
+end
+```
 
 ## Going forward
 
