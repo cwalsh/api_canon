@@ -21,7 +21,8 @@ include ApiCanon
 
 ```ruby
 document_controller :as => 'optional_rename' do
-  describe "The actions here are awesome, they allow you to get a list of awesome things, and make awesome things, too!"
+  describe %Q{The actions here are awesome, they allow you to get a list of 
+              awesome things, and make awesome things, too!}
 end
 ```
 
@@ -31,7 +32,10 @@ More usefully you can document all the actions you want like this:
 
 ```ruby
 document_method :index do
-  param :category_codes, :type => :array, :multiple => true, :example_values => Category.all(:limit => 5, :select => :code).map(&:code), :description => "Return only categories for the given category codes", :default => 'some-awesome-category-code'
+  param :category_codes, :type => :array, :multiple => true, 
+        :example_values => Category.limit(5).pluck(:code),
+        :description => "Return only categories for the given category codes",
+        :default => 'some-awesome-category-code'
 end
 ```
 
@@ -56,8 +60,11 @@ class CategoriesController < ApplicationController
 
   document_method :index do
     describe "This gives you a bunch of categories."
-    param :node, :type => :string, :values => ['womens-fashion', 'mens-fashion'], :default => 'womens-fashion', :description => "Category code to start with"
-    param :depth, :type => :integer, :values => 1..4, :default => 1, :description => "Maximum depth to include child categories"
+    param :node, :type => :string, :default => 'womens-fashion',
+          :values => ['womens-fashion', 'mens-fashion'],
+          :description => "Category code to start with"
+    param :depth, :type => :integer, :values => 1..4, :default => 1, 
+          :description => "Maximum depth to include child categories"
   end
   def index
     # Do stuff.
@@ -86,18 +93,29 @@ class FunkyCategoriesController < ApplicationController
   include ApiCanon
 
   document_controller :as => 'Categories' do
-    describe "Categories are used for filtering products. They are hierarchical, with 4 levels. These 4 levels are known as Super-Categories, Categories, Sub-Categories and Types. Examples include \"Women's Fashion\", \"Shirts\" and so forth. They are uniquely identifiable by their category_code field."
+    describe %Q{Categories are used for filtering products. They are 
+      hierarchical, with 4 levels. Examples include "Women's Fashion",
+      "Shirts" and so forth. They are uniquely identifiable by their 
+      category_code field.}
   end
 
   document_method :index do
-    describe "This action returns a filtered tree of categories based on the parameters given in the request."
-    param :hierarchy_level, :values => 1..4, :type => :integer, :default => 1, :description => "Maximum depth to include child categories"
-    param :category_codes, :type => :array, :multiple => true, :example_values => Category.online.enabled.super_categories.all(:limit => 5, :select => :code).map(&:code), :description => "Return only categories for the given category codes", :default => 'mens-fashion-accessories'
+    describe %Q{This action returns a filtered tree of categories based on the 
+      parameters given in the request.}
+    param :hierarchy_level, :values => 1..4, :type => :integer, :default => 1,
+      :description => "Maximum depth to include child categories"
+    param :category_codes, :type => :array, :multiple => true, 
+      :example_values => Category.limit(5).pluck(:code), 
+      :description => "Return only categories for the given category codes", 
+      :default => 'mens-fashion-accessories'
   end
 
   document_method :show do
-    describe "This action returns a tree of categories starting at the requested root node."
-    param :id, :type => :string, :example_values => Category.online.enabled.super_categories.all(:limit => 5, :select => :code).map(&:code), :description => "Category code to show, the root node for the entire tree.", :default => 'mens-fashion-accessories'
+    describe %Q{This action returns a tree of categories starting at the 
+      requested root node.}
+    param :id, :type => :string,:default => 'mens-fashion-accessories',
+      :example_values => Category.limit(5).pluck(:code),
+      :description => "Category code to show, the root node for the entire tree."
   end
 
   #... code to support the above documented parameters etc.
