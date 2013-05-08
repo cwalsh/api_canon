@@ -1,0 +1,8 @@
+source "https://rubygems.org"
+
+gemspec
+
+# Removed the following, because it breaks the JRuby build
+#group :development do
+#  gem 'redcarpet'
+#end
