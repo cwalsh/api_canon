@@ -50,7 +50,7 @@ module ApiCanon
     def document_controller(opts={}, &block)
       document = DocumentationStore.fetch controller_path
       document ||= Document.new controller_path, controller_name, opts
-      document.instance_eval &block
+      document.instance_eval &block if block_given?
       DocumentationStore.store document
     end
 
@@ -72,7 +72,7 @@ module ApiCanon
       document = DocumentationStore.fetch controller_path
       document ||= Document.new controller_path, controller_name
       documented_action = ApiCanon::DocumentedAction.new method_name
-      documented_action.instance_eval &block
+      documented_action.instance_eval &block if block_given?
       document.add_action documented_action
       DocumentationStore.store document
     end
