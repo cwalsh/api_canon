@@ -1,1 +1,1 @@
-require 'api_canon/app/controllers/api_canon_controller'
+require 'controllers/api_canon_controller'
