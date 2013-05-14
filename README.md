@@ -1,9 +1,11 @@
 # API Canon
 
+Because API documentation should show you, not tell you.
+
 [![Build Status](https://travis-ci.org/cwalsh/api_canon.png?branch=master)](https://travis-ci.org/cwalsh/api_canon)
 
 ## Introduction
-API Canon is a tool for programatically documenting Ruby on Rails APIs with example usage.
+API Canon is a tool for programatically documenting Ruby on Rails APIs with example usage. It supports Rails 2, 3 and 4.
 
 ## Installation and usage
 If you're using bundler, then put this in your Gemfile:
