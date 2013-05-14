@@ -11,8 +11,8 @@ module ApiCanon
   def self.included(base)
     base.extend(ClassMethods)
     base.class_eval do
-      append_view_path File.join(File.dirname(__FILE__),'api_canon','app','views')
-      require 'api_canon/app/helpers/api_canon_view_helper'
+      append_view_path File.join(File.dirname(__FILE__),'..','app','views')
+      require 'helpers/api_canon/api_canon_view_helper'
       helper ApiCanon::ApiCanonViewHelper
     end
   end
