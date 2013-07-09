@@ -30,7 +30,7 @@ document_controller :as => 'optional_rename' do
 end
 ```
 
-That is optional, but reccomended, as it gives context to users of your API.
+That is optional, but recommended, as it gives context to users of your API.
 
 More usefully you can document all the actions you want like this:
 
