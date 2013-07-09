@@ -1,5 +1,6 @@
 module ApiCanon
   class Document
+    include ActiveModel::Serialization
     attr_reader :description, :controller_path, :controller_name
     attr_accessor :documented_actions
     def initialize(controller_path, controller_name, opts={})

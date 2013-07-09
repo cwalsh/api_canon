@@ -9,6 +9,7 @@ module ApiCanon
       else
         map.match 'api_canon/test', route_opts
       end
+      map.resources 'swagger', :controller => 'api_canon/swagger', :only => [:index, :show]
     end
   end
 end
