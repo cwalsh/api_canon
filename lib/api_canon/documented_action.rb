@@ -48,8 +48,7 @@ module ApiCanon
     # ```
     #
     def param(param_name, options={})
-      options = {:http_method => http_method}.merge options
-      @params[param_name] = DocumentedParam.new param_name, options
+      @params[param_name] = DocumentedParam.new param_name, self, options
     end
     # The response_code method will be used as a DSL method in the
     # document_method block to describe what you mean when your action returns

@@ -79,7 +79,7 @@ module ApiCanon
               # TODO: Tighten this up.
               if object.name == 'id'
                 "path"
-              elsif %(POST PUT).include?(object.http_method)
+              elsif %(POST PUT).include?(object.documented_action.http_method)
                 "form"
               else
                 "query"
