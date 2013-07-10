@@ -16,14 +16,14 @@ module ApiCanon
     def index
       set_headers
       api_docs = ::ApiCanon::DocumentationStore.docos
-      render json: api_docs, serializer: ApiCanon::Swagger::ResourceListing
+      render :json => api_docs, :serializer => ApiCanon::Swagger::ResourceListing
     end
 
     def show
       set_headers
       api_doc = ::ApiCanon::DocumentationStore.fetch params[:id]
       if api_doc
-        render json: api_doc, serializer: ApiCanon::Swagger::ApiDeclaration
+        render :json => api_doc, :serializer => ApiCanon::Swagger::ApiDeclaration
       else
         head :not_found
       end
