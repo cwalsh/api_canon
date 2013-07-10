@@ -1,6 +1,7 @@
 module ApiCanon
   class DocumentedParam
-    attr_accessor :name, :values, :type, :default, :description, :example_values
+    include ActiveModel::Serialization
+    attr_accessor :name, :values, :type, :default, :description, :example_values, :required, :description, :documented_action
     attr_writer :multiple
     include ActionView::Helpers
     def values_for_example
@@ -9,8 +10,9 @@ module ApiCanon
     def multiple?
       !!@multiple
     end
-    def initialize(name, opts={})
+    def initialize(name, documented_action, opts={})
       @name = name
+      @documented_action = documented_action
       opts.each {|k,v| self.send("#{k}=", v) }
     end
     def form_values

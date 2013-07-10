@@ -1,7 +1,7 @@
 require 'spec_helper'
 describe ApiCanon::DocumentedAction do
 
-  let(:document) {ApiCanon::DocumentedAction.new :index}
+  let(:document) {ApiCanon::DocumentedAction.new :index, 'controller_name'}
   let(:description) {'ID is the unique identifier of the object'}
   subject { document }
   its(:action_name) { should == :index }

@@ -1,13 +1,25 @@
 module ApiCanon
   class DocumentedAction
-    attr_reader :params, :response_codes, :description, :action_name
-    def initialize(action_name)
+    include ActiveModel::Serialization
+    attr_reader :params, :response_codes, :description, :action_name,
+      :controller_name, :http_method
+    def initialize(action_name, controller_name)
       @action_name = action_name
+      @controller_name = controller_name
       @params={}
       # TODO: This should check routes to see if params[:format] is expected
-      @params[:format] = DocumentedParam.new :format,
+      @params[:format] = DocumentedParam.new :format, self,
         :default => :json, :example_values => [:json, :xml], :type => :string,
         :description => "The requested format of the response."
+
+      # This is based of the rails defaults.
+      @http_method = case action_name
+        when "create"  then "POST"
+        when "update"  then "PUT"
+        when "destory" then "DELETE"
+        else "GET"
+      end
+
       @response_codes={}
     end
     # The param method describes and gives examples for the parameters your
@@ -36,7 +48,7 @@ module ApiCanon
     # ```
     #
     def param(param_name, options={})
-      @params[param_name] = DocumentedParam.new param_name, options
+      @params[param_name] = DocumentedParam.new param_name, self, options
     end
     # The response_code method will be used as a DSL method in the
     # document_method block to describe what you mean when your action returns

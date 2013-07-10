@@ -6,7 +6,7 @@ describe ApiCanon::DocumentedParam do
   end
   let(:fake_form) { mock :form }
   let(:doco_prefix) { 'foo' }
-  let(:documented_param) {ApiCanon::DocumentedParam.new :format, doc_opts}
+  let(:documented_param) {ApiCanon::DocumentedParam.new :format, self, doc_opts}
   subject { documented_param }
   its(:name) { should eq :format }
   its(:type) { should eq 'string' }

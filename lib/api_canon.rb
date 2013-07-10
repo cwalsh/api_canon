@@ -1,12 +1,26 @@
-require 'api_canon/routes'
-require 'api_canon/version'
-require 'api_canon/app'
-require 'api_canon/document'
-require 'api_canon/documented_action'
-require 'api_canon/documented_param'
-require 'api_canon/documentation_store'
+require 'rails'
+require 'active_model'
+require 'active_model/serializer'
 
 module ApiCanon
+
+  class Engine < ::Rails::Engine
+    # isolate_namespace ApiCanon
+
+    initializer "api_canon.initialization" do
+      require 'api_canon/routes'
+      require 'api_canon/version'
+      require 'api_canon/app'
+      require 'api_canon/document'
+      require 'api_canon/documented_action'
+      require 'api_canon/documented_param'
+      require 'api_canon/documentation_store'
+      require 'api_canon/swagger/base'
+      require 'api_canon/swagger/api_declaration'
+      require 'api_canon/swagger/resource_listing'
+      require 'controllers/swagger_controller'
+    end
+  end
 
   def self.included(base)
     base.extend(ClassMethods)
@@ -71,7 +85,7 @@ module ApiCanon
     def document_method(method_name,&block)
       document = DocumentationStore.fetch controller_path
       document ||= Document.new controller_path, controller_name
-      documented_action = ApiCanon::DocumentedAction.new method_name
+      documented_action = ApiCanon::DocumentedAction.new method_name, controller_name
       documented_action.instance_eval &block if block_given?
       document.add_action documented_action
       DocumentationStore.store document
