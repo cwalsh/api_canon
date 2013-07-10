@@ -1,10 +1,12 @@
 module ApiCanon
   class Document
-    attr_reader :description, :controller_path, :controller_name
+    include ActiveModel::Serialization
+    attr_reader :description, :controller_path, :controller_name, :version
     attr_accessor :documented_actions
     def initialize(controller_path, controller_name, opts={})
       @controller_path = controller_path
       @controller_name = controller_name
+      @version = opts[:version]
       self.display_name = opts[:as]
       @documented_actions = []
     end
