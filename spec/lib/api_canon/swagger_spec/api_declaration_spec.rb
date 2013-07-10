@@ -6,7 +6,7 @@ describe ApiCanon::Swagger::ApiDeclaration do
     documented_actions.describe 'description'
     documented_actions.response_code '404', 'reason'
     documented_actions.param 'name', :description => 'description', :type => 'string', :values => (1..10)
-    mock :documented_actions => [ documented_actions ]
+    mock :documented_actions => [ documented_actions ], :version => 'master'
   }
   subject { ApiCanon::Swagger::ApiDeclaration }
 

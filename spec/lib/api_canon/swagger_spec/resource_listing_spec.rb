@@ -4,6 +4,7 @@ describe ApiCanon::Swagger::ResourceListing do
   let(:data) {
     {
       :controller => mock(
+        :version => 'master',
         :description => 'description'
       )
     }

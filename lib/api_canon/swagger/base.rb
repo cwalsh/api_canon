@@ -9,8 +9,7 @@ module ApiCanon
       attributes :apis
 
       def api_version
-        # TODO: this should not be hardcoded
-        'master'
+        object.try(:version) || object.collect { |key, val| val.version }.uniq.to_sentence
       end
 
       def swagger_version
