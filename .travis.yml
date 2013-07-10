@@ -28,6 +28,5 @@ matrix:
     - rvm: jruby-head
 
 gemfile:
-  - Gemfile.rails2.ci
   - Gemfile.rails3.ci
   - Gemfile.rails4.ci
