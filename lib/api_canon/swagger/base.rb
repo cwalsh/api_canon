@@ -9,7 +9,7 @@ module ApiCanon
       attributes :apis
 
       def api_version
-        object.try(:version) || object.collect { |key, val| val.version }.uniq.to_sentence
+        object.respond_to?(:version) ? object.version : object.collect { |key, val| val.version }.uniq.to_sentence
       end
 
       def swagger_version
