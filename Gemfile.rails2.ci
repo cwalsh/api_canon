@@ -1,0 +1,9 @@
+source "https://rubygems.org"
+
+gemspec
+
+gem 'rails', '<3.0.0'
+# Removed the following, because it breaks the JRuby build
+#group :development do
+#  gem 'redcarpet'
+#end
