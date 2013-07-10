@@ -5,7 +5,7 @@ module ApiCanon
       def apis
         object.collect do |endpoint, data|
           {
-            :path => swagger_path(endpoint),
+            :path => api_canon_swagger_doc_path(endpoint),
             :description => data.description
           }
         end
