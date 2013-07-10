@@ -14,17 +14,22 @@ module ApiCanon
 
         def path
           url_params = {
-            :controller => "/#{object.controller_name}",
+            :controller => object.controller_name,
             :action => object.action_name,
             :only_path => true
           }
 
-          # This asumes you will only have id as a path param...
-          # TODO: remove this limitation
-          url_params[:id] = '{id}' if object.params[:id]
+          object.params.keys.each do |name|
+            url_params[name] = '{name}' unless name == :format
+          end
 
-          # TODO: Move gsub's they are ugly
-          "#{url_for(url_params)}.{format}".gsub('%7B', '{').gsub('%7D', '}')
+          url = URI.unescape url_for(url_params)
+
+          # This is required because we dont know if the params are
+          # path params or query params, this way we dont care.
+          url = url.split('?').first
+
+          "#{url}.{format}"
         end
 
         def operations
