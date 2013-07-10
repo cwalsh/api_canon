@@ -15,7 +15,12 @@ If you're using bundler, then put this in your Gemfile:
 ```ruby
 gem 'api_canon'
 ```
-Then, in each controller you want to document, add the line
+Add this to your routes.rb file:
+
+```ruby
+ApiCanon::Routes.draw(self) # Or 'map' instead of 'self' for Rails 2
+```
+Then, in each controller you want to document, add the line:
 
 ```ruby
 include ApiCanon
@@ -44,12 +49,6 @@ end
 ```
 
 To view the api documentation, visit the documented controller's index action with '.html' as the format.
-
-To enable the 'test' button on the generated documentation pages, you'll need to add this to your config/routes.rb file:
-
-```ruby
-ApiCanon::Routes.draw(self) # Or 'map' instead of 'self' for Rails 2
-```
 
 ## Examples
 
