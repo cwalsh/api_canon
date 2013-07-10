@@ -12,13 +12,14 @@ describe ApiCanon::Swagger::ApiDeclaration do
 
 
   it 'should render the swagger api declaration' do
-    subject.any_instance.stub :root_url => 'root_url'
+    subject.any_instance.stub :api_canon_test_url => 'http://example.com/api_canon/test'
+    subject.any_instance.stub :api_canon_test_path => '/api_canon/test'
     subject.any_instance.stub :swagger_path => 'swagger_path'
     ApiCanon::Swagger::ApiDeclaration::Api.any_instance.stub :url_for => 'url_for'
 
     JSON.parse(subject.new(data).to_json).should eql({
       "apiVersion" => "master",
-      "basePath" => 'root_url',
+      "basePath" => 'http://example.com/',
       "swaggerVersion" => 1.1,
       "apis" => [
         {

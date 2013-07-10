@@ -12,7 +12,7 @@ describe ApiCanon::Swagger::ResourceListing do
 
 
   it 'should render the swagger resource listing' do
-    subject.any_instance.stub :root_url => 'root_url'
+    subject.any_instance.stub :api_canon_base_url => 'root_url'
     subject.any_instance.stub :swagger_path => 'swagger_path'
 
     JSON.parse(subject.new(data).to_json).should eql({

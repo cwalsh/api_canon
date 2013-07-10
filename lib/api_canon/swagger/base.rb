@@ -18,8 +18,7 @@ module ApiCanon
       end
 
       def base_path
-        # TODO: Is there a better way?
-        root_url
+        defined?(api_canon_base_url) ? api_canon_base_url : api_canon_test_url.sub(api_canon_test_path,'/')
       end
 
     end
