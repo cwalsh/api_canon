@@ -9,7 +9,9 @@ module ApiCanon
       else
         map.match 'api_canon/test', route_opts
       end
-      map.resources 'swagger', :controller => 'api_canon/swagger', :only => [:index, :show]
+
+      # TODO: make :path => 'swagger-doc' customisable
+      map.resources :path => 'swagger-doc', :controller => 'api_canon/swagger', :only => [:index, :show]
     end
   end
 end

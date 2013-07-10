@@ -1,7 +1,13 @@
+require 'rails'
+require 'active_model'
+require 'active_model/serializer'
+
 module ApiCanon
 
-  class Railtie < Rails::Railtie
-    initializer "api_canon_railtie.configure_rails_initialization" do
+  class Engine < ::Rails::Engine
+    # isolate_namespace ApiCanon
+
+    initializer "api_canon.initialization" do
       require 'api_canon/routes'
       require 'api_canon/version'
       require 'api_canon/app'

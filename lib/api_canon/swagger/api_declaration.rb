@@ -12,14 +12,19 @@ module ApiCanon
         attributes :description
         attributes :operations
 
-        # TODO FIXME THIS WILL BREAK STUFF!!!!!!
-        # should be EG: "path": "/pet/{petId}.{format}"
         def path
-          "#{url_for(
+          url_params = {
             :controller => "/#{object.controller_name}",
             :action => object.action_name,
             :only_path => true
-          )}.{format}"
+          }
+
+          # This asumes you will only have id as a path param...
+          # TODO: remove this limitation
+          url_params[:id] = '{id}' if object.params[:id]
+
+          # TODO: Move gsub's they are ugly
+          "#{url_for(url_params)}.{format}".gsub('%7B', '{').gsub('%7D', '}')
         end
 
         def operations

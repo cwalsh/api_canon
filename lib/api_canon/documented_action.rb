@@ -8,7 +8,7 @@ module ApiCanon
       @controller_name = controller_name
       @params={}
       # TODO: This should check routes to see if params[:format] is expected
-      @params[:format] = DocumentedParam.new :format,
+      @params[:format] = DocumentedParam.new :format, self,
         :default => :json, :example_values => [:json, :xml], :type => :string,
         :description => "The requested format of the response."
 

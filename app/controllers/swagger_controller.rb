@@ -1,6 +1,7 @@
 module ApiCanon
   class SwaggerController < ActionController::Base
 
+    # TODO: Not sure about this
     def set_headers
       if request.headers["HTTP_ORIGIN"]
         headers['Access-Control-Allow-Origin'] = request.headers["HTTP_ORIGIN"]
