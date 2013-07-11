@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
   s.require_paths = ["app","lib"]
 
-  s.add_dependency("rails", ">= 2.3.17")
+  s.add_dependency("rails", "~> 2.3")
   s.add_development_dependency('rspec', '~> 2.13.0')
   s.add_development_dependency('rake')
   s.add_development_dependency('yard')
