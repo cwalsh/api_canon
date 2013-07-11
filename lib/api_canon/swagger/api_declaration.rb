@@ -79,7 +79,7 @@ module ApiCanon
           class Parameter < ActiveModel::Serializer
             self.root = false
             attributes :param_type => :paramType,
-              :type => :dataType,
+              :data_type => :dataType,
               :allowable_values => :allowableValues,
               :allow_multiple => :allowMultiple
 
@@ -117,6 +117,10 @@ module ApiCanon
 
             def allow_multiple
               object.multiple?
+            end
+
+            def data_type
+              object.type
             end
 
           end
