@@ -13,10 +13,10 @@ module ApiCanon
         :description => "The requested format of the response."
 
       # This is based of the rails defaults.
-      @http_method = case action_name
+      @http_method = case action_name.to_s
         when "create"  then "POST"
         when "update"  then "PUT"
-        when "destory" then "DELETE"
+        when "destroy" then "DELETE"
         else "GET"
       end
 
