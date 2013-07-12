@@ -136,6 +136,7 @@ Right now, api_canon is changing a lot.  I plan to support the following feature
 
 ## Contributors
 [Cameron Walsh](http://github.com/cwalsh)
+[Leon Dewey](http://github.com/leondewey)
 
 ## Contributions
 1. Fork project
