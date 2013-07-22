@@ -6,8 +6,10 @@ Because API documentation should show you, not tell you.
 
 ## Introduction
 API Canon is a tool for programatically documenting Ruby on Rails APIs with example usage. 
-It supports Rails 2, 3 and 4. You can see a real live example at
+It supports Rails 2 (see the Rails2 branch, api_canon versions less than 0.4), 3 and 4. You can see a real live example at
 [http://www.westfield.com.au/api/product/latest/categories](http://www.westfield.com.au/api/product/latest/categories)
+
+As of 0.4.1, api_canon now supports [https://developers.helloreverb.com/swagger/](Swagger) json output, but only supports Rails 3+.
 
 ## Installation and usage
 If you're using bundler, then put this in your Gemfile:
