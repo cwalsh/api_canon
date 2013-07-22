@@ -42,7 +42,7 @@ module ApiCanon
   # which renders the ApiCanon documentation if params[:format] is html, and defaults
   # to the existing method otherwise.
   def index
-    if params[:format].blank? || params[:format] == 'html'
+    if request.format.html?
       api_canon_docs
     else
       super
