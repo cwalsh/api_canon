@@ -146,3 +146,6 @@ Right now, api_canon is changing a lot.  I plan to support the following feature
 3. Pull request
 4. ???
 5. Profit.
+
+# License
+See MIT-LICENSE.
