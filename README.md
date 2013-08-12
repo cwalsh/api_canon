@@ -32,6 +32,7 @@ include ApiCanon
 
 ```ruby
 document_controller :as => 'optional_rename' do
+  link_path '/foo' #Optionally override the sidebar link.
   describe %Q{The actions here are awesome, they allow you to get a list of 
               awesome things, and make awesome things, too!}
 end
