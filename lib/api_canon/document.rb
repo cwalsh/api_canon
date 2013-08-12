@@ -1,6 +1,6 @@
 module ApiCanon
   class Document
-    attr_reader :description, :controller_path, :controller_name
+    attr_reader :description, :controller_path, :controller_name, :sidebar_link
     attr_accessor :documented_actions
     def initialize(controller_path, controller_name, opts={})
       @controller_path = controller_path
@@ -14,6 +14,9 @@ module ApiCanon
     # @param desc [String] The text to appear at the top of your API endpoint documentation page.
     def describe(desc)
       @description = desc
+    end
+    def link_path(link)
+      @sidebar_link = link
     end
     def display_name
       @display_name || @controller_name.titleize
