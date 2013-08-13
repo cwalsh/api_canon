@@ -5,7 +5,6 @@ describe ApiCanon::Swagger::ApiDeclaration do
     documented_action = ApiCanon::DocumentedAction.new('action_name', 'controller_name')
     documented_action.describe 'description'
     documented_action.response_code '404', 'reason'
-    documented_action.param 'id', :type => 'string'
     documented_action.param 'name', :description => 'description', :type => 'string', :values => (1..10)
     documented_action
   }
@@ -35,15 +34,6 @@ describe ApiCanon::Swagger::ApiDeclaration do
               "nickname" => "combustion-controller_name-action_name-get",
               "parameters" => [
                 {
-                  "paramType" => "path",
-                  "dataType" => "string",
-                  "allowableValues" => nil,
-                  "allowMultiple" => false,
-                  "name" => "id",
-                  "description" => nil,
-                  "required" => false
-                },
-                {
                   "paramType" => "query",
                   "dataType" => "string",
                   "allowableValues" => {"max"=>10, "min"=>1, "valueType"=>"RANGE"},
@@ -66,6 +56,7 @@ describe ApiCanon::Swagger::ApiDeclaration do
 
     describe '#url_params' do
       it 'should return params with placeholder values' do
+        documented_action.param 'id', :type => 'string'
         subject.url_params['id'].should eql("{id}")
       end
     end
