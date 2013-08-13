@@ -10,7 +10,7 @@ describe ApiCanon::Swagger::ApiDeclaration do
     documented_action
   }
   let(:data) {
-    mock :documented_actions => [ documented_action ], :version => 'master'
+    double :documented_actions => [ documented_action ], :version => 'master'
   }
   subject { described_class.new(data) }
 

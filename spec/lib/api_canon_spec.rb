@@ -17,7 +17,7 @@ describe ApiCanon do
   end
 
   describe "document_method" do
-    let(:api_document) { mock :api_document }
+    let(:api_document) { double :api_document }
     context "without a current controller doc" do
       it "creates and stores a new ApiCanon::Document and adds the documented action" do
         ApiCanon::Document.should_receive(:new).with('fake', 'fake').and_return(api_document)

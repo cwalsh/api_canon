@@ -3,7 +3,7 @@ describe ApiCanon::Swagger::ResourceListing do
 
   let(:data) {
     {
-      :controller => mock(
+      :controller => double(
         :version => 'master',
         :description => 'description'
       )
