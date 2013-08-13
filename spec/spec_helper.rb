@@ -8,4 +8,10 @@ require 'combustion'
 require 'rspec'
 require 'rspec/rails'
 require 'api_canon'
+
+require 'json_spec'
+RSpec.configure do |config|
+  config.include JsonSpec::Helpers
+end
+
 Combustion.initialize!

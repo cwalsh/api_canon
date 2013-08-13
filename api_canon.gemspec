@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency("active_model_serializers")
   s.add_development_dependency('rspec', '~> 2.13')
   s.add_development_dependency('rspec-rails')
+  s.add_development_dependency('json_spec')
   s.add_development_dependency('rake')
   s.add_development_dependency('yard')
   s.add_development_dependency('pry')

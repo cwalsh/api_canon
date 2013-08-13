@@ -20,7 +20,7 @@ describe ApiCanon::Swagger::ApiDeclaration do
     described_class.any_instance.stub :swagger_path => 'swagger_path'
     ApiCanon::Swagger::ApiDeclaration::Api.any_instance.stub :url_for => 'url_for'
 
-    JSON.parse(subject.to_json).should eql({
+    subject.to_json.should be_json_eql({
       "apiVersion" => "master",
       "basePath" => 'http://example.com/',
       "swaggerVersion" => 1.1,
@@ -58,7 +58,7 @@ describe ApiCanon::Swagger::ApiDeclaration do
           ]
         }
       ]
-    })
+    }.to_json)
   end
 
   describe ApiCanon::Swagger::ApiDeclaration::Api do
