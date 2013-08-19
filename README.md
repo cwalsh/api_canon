@@ -134,12 +134,12 @@ Right now, api_canon is changing a lot.  I plan to support the following feature
 
 1. Response codes - describe what you mean when you send back a 200, a 201, 403 etc.
 2. Support API tokens or other authentication to allow users to edit data live, with non-GET requests.
-3. Swagger API output (optional)
 4. You will need to route the index action for each documented controller until such point as I provide an alternative means of getting at this documentation.
 
 ## Contributors
 [Cameron Walsh](http://github.com/cwalsh)
 [Leon Dewey](http://github.com/leondewey)
+[Ben Tillman](http://github.com/warp)
 
 ## Contributions
 1. Fork project
