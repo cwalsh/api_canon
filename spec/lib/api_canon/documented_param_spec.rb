@@ -4,7 +4,7 @@ describe ApiCanon::DocumentedParam do
   let(:doc_opts) do
     {:type => 'string', :default => :json, :example_values => example_values}
   end
-  let(:fake_form) { mock :form }
+  let(:fake_form) { double :form }
   let(:doco_prefix) { 'foo' }
   let(:documented_param) {ApiCanon::DocumentedParam.new :format, self, doc_opts}
   subject { documented_param }

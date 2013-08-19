@@ -13,16 +13,6 @@ module ApiCanon
         attributes :operations
 
         def path
-          url_params = {
-            :controller => object.controller_name,
-            :action => object.action_name,
-            :only_path => true
-          }
-
-          object.params.keys.each do |name|
-            url_params[name] = '{name}' unless name == :format
-          end
-
           url = URI.unescape url_for(url_params)
 
           # This is required because we dont know if the params are
@@ -30,6 +20,20 @@ module ApiCanon
           url = url.split('?').first
 
           "#{url}.{format}"
+        end
+
+        def url_params
+          url_params = {
+            :controller => object.controller_name,
+            :action => object.action_name,
+            :only_path => true
+          }
+
+          object.params.keys.each do |name|
+            url_params[name] = "{#{name}}" unless name == :format
+          end
+
+          url_params
         end
 
         def operations
@@ -87,7 +91,7 @@ module ApiCanon
 
             def param_type
               # TODO: Tighten this up.
-              if object.name == 'id'
+              if object.name.to_s == 'id'
                 "path"
               elsif %(POST PUT).include?(object.documented_action.http_method)
                 "form"
