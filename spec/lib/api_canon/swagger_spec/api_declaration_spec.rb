@@ -52,13 +52,52 @@ describe ApiCanon::Swagger::ApiDeclaration do
     }.to_json)
   end
 
-  describe ApiCanon::Swagger::ApiDeclaration::Api do
+  describe '::Api' do
     subject { ApiCanon::Swagger::ApiDeclaration::Api.new(documented_action) }
 
     describe '#url_params' do
       it 'should return params with placeholder values' do
         documented_action.param 'id', :type => 'string'
         subject.url_params['id'].should eql("{id}")
+      end
+    end
+
+    describe '::Parameter' do
+      subject { ApiCanon::Swagger::ApiDeclaration::Api::Operation::Parameter.new(param) }
+
+      describe '#param_type' do
+
+        describe 'with param_type path' do
+          let(:param) { double :param_type => 'path' }
+
+          it 'should return path' do
+            subject.param_type.should eql('path')
+          end
+        end
+
+        describe 'with name id' do
+          let(:param) { double :param_type => nil, :name => 'id' }
+
+          it 'should return path' do
+            subject.param_type.should eql('path')
+          end
+        end
+
+        describe 'with POST http_method' do
+          let(:param) { double :param_type => nil, :name => 'name', :http_method => 'POST' }
+
+          it 'should return path' do
+            subject.param_type.should eql('form')
+          end
+        end
+
+        describe 'with GET http_method' do
+          let(:param) { double :param_type => nil, :name => 'name', :http_method => 'GET' }
+
+          it 'should return query' do
+            subject.param_type.should eql('query')
+          end
+        end
       end
     end
   end
