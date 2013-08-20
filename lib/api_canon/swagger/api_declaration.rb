@@ -17,9 +17,7 @@ module ApiCanon
 
           # This is required because we dont know if the params are
           # path params or query params, this way we dont care.
-          url = url.split('?').first
-
-          "#{url}.{format}"
+          url.split('?').first
         end
 
         def url_params
@@ -30,7 +28,7 @@ module ApiCanon
           }
 
           object.params.keys.each do |name|
-            url_params[name] = "{#{name}}" unless name == :format
+            url_params[name] = "{#{name}}"
           end
 
           url_params
@@ -84,6 +82,7 @@ module ApiCanon
             self.root = false
             attributes :param_type => :paramType,
               :data_type => :dataType,
+              :default => :defaultValue,
               :allowable_values => :allowableValues,
               :allow_multiple => :allowMultiple
 

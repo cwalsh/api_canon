@@ -5,7 +5,7 @@ describe ApiCanon::Swagger::ApiDeclaration do
     documented_action = ApiCanon::DocumentedAction.new('action_name', 'controller_name')
     documented_action.describe 'description'
     documented_action.response_code '404', 'reason'
-    documented_action.param 'name', :description => 'description', :type => 'string', :values => (1..10)
+    documented_action.param 'name', :description => 'description', :type => 'string', :default => 'test', :values => (1..10)
     documented_action
   }
   let(:data) {
@@ -25,7 +25,7 @@ describe ApiCanon::Swagger::ApiDeclaration do
       "swaggerVersion" => 1.1,
       "apis" => [
         {
-          "path" => "url_for.{format}",
+          "path" => "url_for",
           "description" => 'description',
           "operations" => [
             {
@@ -36,7 +36,8 @@ describe ApiCanon::Swagger::ApiDeclaration do
                 {
                   "paramType" => "query",
                   "dataType" => "string",
-                  "allowableValues" => {"max"=>10, "min"=>1, "valueType"=>"RANGE"},
+                  "defaultValue" => "test",
+                  "allowableValues" => {"max" => 10, "min" => 1, "valueType" => "RANGE"},
                   "allowMultiple" => false,
                   "name" => "name",
                   "description" => 'description',
