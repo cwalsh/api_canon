@@ -119,7 +119,7 @@ class FunkyCategoriesController < ApplicationController
   document_method :show do
     describe %Q{This action returns a tree of categories starting at the 
       requested root node.}
-    param :id, :type => :string,:default => 'mens-fashion-accessories',
+    param :id, :type => :string, :default => 'mens-fashion-accessories',
       :example_values => Category.limit(5).pluck(:code),
       :description => "Category code to show, the root node for the entire tree."
   end
@@ -137,9 +137,9 @@ Right now, api_canon is changing a lot.  I plan to support the following feature
 4. You will need to route the index action for each documented controller until such point as I provide an alternative means of getting at this documentation.
 
 ## Contributors
-[Cameron Walsh](http://github.com/cwalsh)
-[Leon Dewey](http://github.com/leondewey)
-[Ben Tillman](http://github.com/warp)
+* [Cameron Walsh](http://github.com/cwalsh)
+* [Leon Dewey](http://github.com/leondewey)
+* [Ben Tillman](http://github.com/warp)
 
 ## Contributions
 1. Fork project
