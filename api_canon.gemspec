@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.license       = "MIT"
   s.version       = ApiCanon::VERSION
   s.platform      = Gem::Platform::RUBY
-  s.homepage      = %q{http://github.com/cwalsh/api_canon}
+  s.homepage      = %q{http://github.com/westfield/api_canon}
   s.authors       = ["Cameron Walsh", "Leon Dewey"]
   s.email         = ["cameron.walsh@gmail.com", "leon@leondewey.com"]
   s.description   = %q{api_canon is a declarative documentation generator
