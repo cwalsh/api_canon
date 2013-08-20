@@ -89,10 +89,11 @@ module ApiCanon
             attributes :name, :description, :required
 
             def param_type
-              # TODO: Tighten this up.
-              if object.name.to_s == 'id'
+              if object.param_type.present?
+                object.param_type
+              elsif object.name.to_s == 'id'
                 "path"
-              elsif %(POST PUT).include?(object.documented_action.http_method)
+              elsif %(POST PUT).include?(object.http_method)
                 "form"
               else
                 "query"

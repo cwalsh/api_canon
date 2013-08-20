@@ -1,8 +1,9 @@
 module ApiCanon
   class DocumentedParam
     include ActiveModel::Serialization
-    attr_accessor :name, :values, :type, :default, :description, :example_values, :required, :description, :documented_action
+    attr_accessor :name, :values, :type, :param_type, :default, :description, :example_values, :required, :description, :documented_action
     attr_writer :multiple
+    delegate :http_method, :to => :documented_action
     include ActionView::Helpers
     def values_for_example
       example_values || values || ""
