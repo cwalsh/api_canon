@@ -1,7 +1,7 @@
 module ApiCanon
   class DocumentedAction
     include ActiveModel::Serialization
-    attr_reader :params, :response_codes, :description, :action_name,
+    attr_reader :params, :response_codes, :response_model_name, :description, :action_name,
       :controller_name, :http_method
     def initialize(action_name, controller_name)
       @action_name = action_name
@@ -20,7 +20,7 @@ module ApiCanon
         else "GET"
       end
 
-      @response_codes={}
+      @response_codes = {}
     end
     # The param method describes and gives examples for the parameters your
     # API action can take.
@@ -49,6 +49,12 @@ module ApiCanon
     #
     def param(param_name, options={})
       @params[param_name] = DocumentedParam.new param_name, self, options
+    end
+    # The response_class method allows you to specify name of a model describing the response
+    # @see ApiCanon::ClassMethods#document_model
+    #
+    def response_class(model_name)
+      @response_model_name = model_name
     end
     # The response_code method will be used as a DSL method in the
     # document_method block to describe what you mean when your action returns

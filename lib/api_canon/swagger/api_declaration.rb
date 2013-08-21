@@ -2,8 +2,14 @@ module ApiCanon
   module Swagger
     class ApiDeclaration < ApiCanon::Swagger::Base
 
+      attributes :models
+
       def apis
         object.documented_actions.collect { |action| Api.new(action) }
+      end
+
+      def models
+        object.documented_models
       end
 
       class Api < ActiveModel::Serializer
@@ -43,8 +49,8 @@ module ApiCanon
           self.root = false
 
           attributes :http_method => :httpMethod,
-            :error_responses => :errorResponses
-            #:response_class => :responseClass
+            :error_responses => :errorResponses,
+            :response_model_name => :responseClass
           attributes :nickname, :parameters, :summary
 
           def nickname
@@ -65,10 +71,6 @@ module ApiCanon
               { :code => code, :reason => reason }
             end
           end
-
-          # def response_class
-          #   object.controller_name.singularize.titlecase
-          # end
 
           def parameters
             object.params.collect do |name, param|
@@ -106,11 +108,11 @@ module ApiCanon
 
             def allowable_values
               if object.values.class == Range
-                  {
-                    :max => object.values.max,
-                    :min => object.values.min,
-                    :valueType => "RANGE"
-                  }
+                {
+                  :max => object.values.max,
+                  :min => object.values.min,
+                  :valueType => "RANGE"
+                }
               elsif object.values.class == Array
                 {
                   :values => object.values,
