@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.version       = ApiCanon::VERSION
   s.platform      = Gem::Platform::RUBY
   s.homepage      = %q{http://github.com/westfield/api_canon}
-  s.authors       = ["Cameron Walsh", "Leon Dewey"]
-  s.email         = ["cameron.walsh@gmail.com", "leon@leondewey.com"]
+  s.authors       = ["Cameron Walsh", "Leon Dewey", "Ben Tillman"]
+  s.email         = ["cameron.walsh@gmail.com", "leon@leondewey.com", "ben.tillman@gmail.com"]
   s.description   = %q{api_canon is a declarative documentation generator
                        for APIs. Declare the parameters and response codes,
                        describe them, and give some example values. api_canon
