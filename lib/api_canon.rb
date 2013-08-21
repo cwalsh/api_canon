@@ -14,6 +14,7 @@ module ApiCanon
       require 'api_canon/document'
       require 'api_canon/documented_action'
       require 'api_canon/documented_param'
+      require 'api_canon/documented_model'
       require 'api_canon/documentation_store'
       require 'api_canon/swagger/base'
       require 'api_canon/swagger/api_declaration'
@@ -62,10 +63,9 @@ module ApiCanon
     # @param block [&block] Begins the controller documentation DSL
     # @see ApiCanon::Document#describe
     def document_controller(opts={}, &block)
-      document = DocumentationStore.fetch controller_path
-      document ||= Document.new controller_path, controller_name, opts
-      document.instance_eval &block if block_given?
-      DocumentationStore.store document
+      document(opts) do |document|
+        document.instance_eval &block if block_given?
+      end
     end
 
     # document_method is used to describe the actions in your controller (your API actions)
@@ -82,15 +82,41 @@ module ApiCanon
     # @see ApiCanon::DocumentedAction#describe
     # @see ApiCanon::DocumentedAction#param
     # @see ApiCanon::DocumentedAction#response_code
-    def document_method(method_name,&block)
+    def document_method(method_name, &block)
+      document do |document|
+        documented_action = ApiCanon::DocumentedAction.new method_name, controller_name
+        documented_action.instance_eval &block if block_given?
+        document.add_action documented_action
+      end
+    end
+
+    # document_model is used to describe response object models
+    #
+    # Example:
+    #   document_model 'Thing' do
+    #     property :foo, type: 'string', description: 'foo is the type of awesome required', required: true
+    #     property :filter_level, type: 'integer', description: 'filter_level can only be 1, 2, 3 or 4'
+    #   end
+    #
+    # @param model_name [String] The model to be documented
+    # @param block [block] Begins the model documentation DSL
+    # @see ApiCanon::DocumentedModel#property
+    def document_model(id, &block)
+      document do |document|
+        documented_model = ApiCanon::DocumentedModel.new id
+        documented_model.instance_eval &block if block_given?
+        document.add_model documented_model
+      end
+    end
+
+  private
+
+    def document(opts={}, &block)
       document = DocumentationStore.fetch controller_path
-      document ||= Document.new controller_path, controller_name
-      documented_action = ApiCanon::DocumentedAction.new method_name, controller_name
-      documented_action.instance_eval &block if block_given?
-      document.add_action documented_action
+      document ||= Document.new controller_path, controller_name, opts
+      block.call document if block_given?
       DocumentationStore.store document
     end
   end
-
 
 end

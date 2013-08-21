@@ -4,12 +4,21 @@ describe ApiCanon::Swagger::ApiDeclaration do
   let(:documented_action) {
     documented_action = ApiCanon::DocumentedAction.new('action_name', 'controller_name')
     documented_action.describe 'description'
+    documented_action.response_class 'Thing'
     documented_action.response_code '404', 'reason'
     documented_action.param 'name', :description => 'description', :type => 'string', :default => 'test', :values => (1..10)
     documented_action
   }
+  let(:documented_model) {
+    documented_model = ApiCanon::DocumentedModel.new('Thing')
+    documented_model.property :foo, :type => :string, :required => true
+    documented_model
+  }
+  let(:documented_models) {
+    { 'Thing' => documented_model }
+  }
   let(:data) {
-    double :documented_actions => [ documented_action ], :version => 'master'
+    double :documented_actions => [ documented_action ], :documented_models => documented_models, :version => 'master'
   }
   subject { described_class.new(data) }
 
@@ -44,11 +53,23 @@ describe ApiCanon::Swagger::ApiDeclaration do
                   "required" => false
                 }
               ],
+              "responseClass" => 'Thing',
               "summary" => 'description'
             }
           ]
         }
-      ]
+      ],
+      "models" => {
+        "Thing" => {
+          "id" => "Thing",
+          "properties" => {
+            "foo" => {
+              "type" => "string",
+              "required" => true
+            }
+          }
+        }
+      }
     }.to_json)
   end
 

@@ -2,12 +2,13 @@ module ApiCanon
   class Document
     include ActiveModel::Serialization
     attr_reader :description, :controller_path, :controller_name, :version, :sidebar_link
-    attr_accessor :documented_actions
+    attr_accessor :documented_actions, :documented_models
     def initialize(controller_path, controller_name, opts={})
       @controller_path = controller_path
       @controller_name = controller_name
       @version = opts[:version]
       self.display_name = opts[:as]
+      @documented_models = {}
       @documented_actions = []
     end
     # The describe method is used as a DSL method in the document_controller block,
@@ -33,6 +34,9 @@ module ApiCanon
     end
     def add_action(documented_action)
       @documented_actions << documented_action unless @documented_actions.map(&:action_name).include?(documented_action.action_name)
+    end
+    def add_model(documented_model)
+      @documented_models[documented_model.id] = documented_model
     end
   end
 end

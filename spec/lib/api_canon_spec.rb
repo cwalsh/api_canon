@@ -20,7 +20,7 @@ describe ApiCanon do
     let(:api_document) { double :api_document }
     context "without a current controller doc" do
       it "creates and stores a new ApiCanon::Document and adds the documented action" do
-        ApiCanon::Document.should_receive(:new).with('fake', 'fake').and_return(api_document)
+        ApiCanon::Document.should_receive(:new).with('fake', 'fake', {}).and_return(api_document)
         ApiCanon::DocumentationStore.instance.should_receive(:store).with(api_document)
         api_document.should_receive :add_action
         fake_controller.send(:document_method, :index, &(Proc.new {}))
