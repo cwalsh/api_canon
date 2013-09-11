@@ -22,6 +22,9 @@ module ApiCanon
     def to_field(f, doco_prefix)
       # TODO: This doco_prefix thing sucks. Get rid of it.
       if type == :array
+        if form_values.nil?
+          raise ArgumentError.new(':values or :example_values must be supplied for :array type params')
+        end
         f.select name, form_values, {:selected => default, :include_blank => true}, {:multiple => multiple?, :class => 'input-block-level', :id => "#{doco_prefix}_#{name}"}
       elsif type == :boolean
         f.select name, [true,false], {:selected => default, :include_blank => true}, :class => 'input-block-level', :id => "#{doco_prefix}_#{name}"
