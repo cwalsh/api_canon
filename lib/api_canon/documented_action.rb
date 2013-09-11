@@ -2,9 +2,10 @@ module ApiCanon
   class DocumentedAction
     include ActiveModel::Serialization
     attr_reader :params, :response_codes, :response_model_name, :description, :action_name,
-      :controller_name, :http_method
-    def initialize(action_name, controller_name)
+      :controller_name, :controller_path, :http_method
+    def initialize(action_name, controller_path, controller_name)
       @action_name = action_name
+      @controller_path = controller_path
       @controller_name = controller_name
       @params={}
       # TODO: This should check routes to see if params[:format] is expected

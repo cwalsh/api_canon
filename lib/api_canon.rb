@@ -84,7 +84,7 @@ module ApiCanon
     # @see ApiCanon::DocumentedAction#response_code
     def document_method(method_name, &block)
       document do |document|
-        documented_action = ApiCanon::DocumentedAction.new method_name, controller_name
+        documented_action = ApiCanon::DocumentedAction.new method_name, controller_path, controller_name
         documented_action.instance_eval &block if block_given?
         document.add_action documented_action
       end
