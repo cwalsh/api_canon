@@ -28,7 +28,7 @@ module ApiCanon
 
         def url_params
           url_params = {
-            :controller => object.controller_name,
+            :controller => object.controller_path,
             :action => object.action_name,
             :only_path => true
           }

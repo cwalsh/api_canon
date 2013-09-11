@@ -2,7 +2,7 @@ require 'spec_helper'
 describe ApiCanon::Swagger::ApiDeclaration do
 
   let(:documented_action) {
-    documented_action = ApiCanon::DocumentedAction.new('action_name', 'controller_name')
+    documented_action = ApiCanon::DocumentedAction.new('action_name', 'controller_path', 'controller_name')
     documented_action.describe 'description'
     documented_action.response_class 'Thing'
     documented_action.response_code '404', 'reason'
