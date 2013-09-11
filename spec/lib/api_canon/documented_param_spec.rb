@@ -26,6 +26,12 @@ describe ApiCanon::DocumentedParam do
         fake_form.should_receive(:select).with :format, [:json, :xml], hash_including({:include_blank => true}), hash_including({:id => 'foo_format'})
         documented_param.to_field fake_form, doco_prefix
       end
+      context 'when form_values returns nil' do
+        it 'raises an ArgumentError' do
+          subject.stub(:form_values => nil)
+          expect { documented_param.to_field fake_form, doco_prefix }.to raise_exception(ArgumentError)
+        end
+      end
     end
     context "boolean-type params" do
       before(:each) {documented_param.type = :boolean}
